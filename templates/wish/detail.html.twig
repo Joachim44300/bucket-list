@@ -5,10 +5,10 @@
 {% block container %}
 
         <ul>
-            <li>{{ wishes.title }}</li>
-            <li>{{ wishes.description }}</li>
-            <li>{{ wishes.author }}</li>
-            <li>{{ wishes.dateCreated|date("d/m/Y") }}</li>
+            <li>{{ $wish.title }}</li>
+            <li>{{ $wish.description }}</li>
+            <li>{{ $wish.author }}</li>
+            <li>{{ $wish.dateCreated|date("d/m/Y") }}</li>
         </ul>
 
 
