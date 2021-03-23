@@ -1,3 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Detail{% endblock %}
+
+{% block container %}
+
+        <ul>
+            <li>{{ wishes.title }}</li>
+            <li>{{ wishes.description }}</li>
+            <li>{{ wishes.author }}</li>
+            <li>{{ wishes.dateCreated|date("d/m/Y") }}</li>
+        </ul>
+
+
+{% endblock %}
