@@ -3,34 +3,80 @@
 namespace App\Controller;
 
 use App\Entity\Wish;
+use App\Form\WishType;
 use App\Repository\WishRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class WishController extends AbstractController
 {
     /**
-     * @Route("/wishes", name="wish_list")
+     * @Route("/contribuer/", name="wish_new")
      */
-    public function list(WishRepository $wishRepository): Response
+    public function newWish(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $wishes = $wishRepository->findBy([], ['dateCreated' => "DESC"], 30, 0);
+        // Crée une instance de l'entité que le form sert à créer
+        $wish = new Wish();
 
-        return $this->render('wish/list.html.twig', [
-            "wishes" => $wishes
+        // Crée une instance de la classe de formulaire
+        // On associe cette entité à notre formulaire
+        $wishForm = $this->createForm(WishType::class, $wish);
+
+        // On prend les données du formulaire soumis, et les injecte dans mon $wish
+        $wishForm->handleRequest($request);
+
+        // Si le formulaire est soumis
+        if ($wishForm->isSubmitted() && $wishForm->isValid()) {
+            // Hydrate les propriétés qui sont encore null
+            $wish->setIsPublished(true);
+            $wish->setDateCreated(new \DateTime());
+
+            // Sauvegarde en Bdd
+            $entityManager->persist($wish);
+            $entityManager->flush();
+
+            $this->addFlash("sucess", "Le souhait a été enregistré");
+
+            // Redirige vers une autre page, ou vers la page actuelle pour vider le form
+            return $this->redirectToRoute("wish_detail", [
+                'id' => $wish->getId()
+            ]);
+
+        }
+
+
+        return $this->render("/wishes/new_wish.html.twig", [
+            // Passe l'instance à twig pour affichage
+            "wishForm" => $wishForm->createView()
         ]);
     }
 
     /**
-     * @Route("/wishes/{id}", name="wish_detail")
+     * @Route("/wishes/{page}", name="wish_list", requirements={"page": "\d+"})
+     */
+    public function list(WishRepository $wishRepository, int $page = 1): Response
+    {
+        //$wishes = $wishRepository->findBy([], ['dateCreated' => "DESC"], 30, 0);
+        $wishes = $wishRepository->findWishList($page);
+
+        return $this->render('wish/list.html.twig', [
+            "wishes" => $wishes,
+            "currentPage" => $page,
+        ]);
+    }
+
+    /**
+     * @Route("/wishes/detail/{id}", name="wish_detail")
      */
     public function detail($id, WishRepository $wishRepository): Response
     {
         $wish = $wishRepository->find($id);
         return $this->render('wish/detail.html.twig', [
-            "wishes" => $wish
+            "wish" => $wish
         ]);
     }
 

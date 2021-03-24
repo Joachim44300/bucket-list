@@ -19,6 +19,53 @@ class WishRepository extends ServiceEntityRepository
         parent::__construct($registry, Wish::class);
     }
 
+    public function findWishList(int $page = 1): ?array
+    {
+        // En QueryBuilder
+        $queryBuilder = $this->createQueryBuilder('w');
+
+        // Notre offset
+        // Page 1 : offset = 0; Page 2 : offset = 20; Page 3 : offset = 40
+        $offset = ($page - 1) * 20;
+        $queryBuilder->setFirstResult($offset);
+
+        // Nombre max de résultats
+        $queryBuilder->setMaxResults(20);
+
+        // Le tri
+        $queryBuilder->addOrderBy('w.dateCreated', 'DESC');
+
+        // Ajoute des clauses WHERE
+        $queryBuilder
+            ->andWhere('w.isPublished = true');
+
+        // On récupère l'objet Query de Doctrine
+        $query = $queryBuilder->getQuery();
+
+        // On exécute la requête et on récupère les résultats
+        $result = $query->getResult();
+
+        return $result;
+
+        /*
+        // En DQL
+        $dql = "SELECT w
+                FROM App\Entity\Wish w
+                WHERE w.isPublished = true";
+
+        // On récupère l'entity manager
+        $entityManager = $this->getEntityManager();
+        // On crée la requête Doctrine
+        $query = $entityManager->createQuery($dql);
+        // Limite le nombre de résultat
+        $query->setMaxResults(20);
+        // On exécute la requête et on récupère les résultats
+        $result = $query->getResult();
+
+        return $result;
+        */
+    }
+
     // /**
     //  * @return Wish[] Returns an array of Wish objects
     //  */

@@ -12,6 +12,15 @@
     <link rel="stylesheet" href="{{ asset('css/font.css') }}">
     <title>{% block title %}Bucket-List{% endblock %}</title>
 </head>
+
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="flash-{{ label }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
 <body>
 <header>
     <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -38,25 +47,10 @@
                 </a>
 
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        More
+                    <a class="navbar-item" href="{{ path('main_aboutUs') }}">
+                        AboutUs
                     </a>
 
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="{{ path('main_aboutUs') }}">
-                            AboutUs
-                        </a>
-                        <a class="navbar-item">
-                            Jobs
-                        </a>
-                        <a class="navbar-item">
-                            Contact
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item">
-                            Report an issue
-                        </a>
-                    </div>
                 </div>
             </div>
 
@@ -79,10 +73,10 @@
 <main>
     <section class="section">
         {% block container %}
-        <h1 class="title">Section</h1>
-        <h2 class="subtitle">
-            A simple container to divide your page into <strong>sections</strong>, like the one you're currently reading.
-        </h2>
+            <h1 class="title">Section</h1>
+            <h2 class="subtitle">
+                A simple container to divide your page into <strong>sections</strong>, like the one you're currently reading.
+            </h2>
         {% endblock %}
     </section>
 </main>
