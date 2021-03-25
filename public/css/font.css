@@ -5,3 +5,34 @@ p{
 .block:not(:last-child) {
     margin-bottom: 1.5rem;
 }
+
+footer {
+    margin-bottom: 30px;
+    padding: 10px 0;
+}
+
+.section {
+    text-align: center;
+}
+
+.container {
+    text-align: center;
+}
+
+.form-group {
+    margin-top: 10px;
+}
+
+textarea {
+    width: 200px;
+    height: 50px;
+}
+
+input {
+    width: 200px;
+    box-sizing: border-box;
+}
+
+.title {
+    display: inline-block;
+}

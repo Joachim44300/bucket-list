@@ -7,19 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{ asset('img/favicon.png') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="{{ asset('css/font.css') }}">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/font.css') }}">
     <title>{% block title %}Bucket-List{% endblock %}</title>
 </head>
-
-{% for label, messages in app.flashes %}
-    {% for message in messages %}
-        <div class="flash-{{ label }}">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endfor %}
 
 <body>
 <header>
@@ -69,6 +61,20 @@
         </div>
     </nav>
 </header>
+
+<div class="container">
+        <article>
+            <div class="block">
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="notification is-{{ label }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </article>
+</div>
 
 <main>
     <section class="section">

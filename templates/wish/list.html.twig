@@ -3,19 +3,28 @@
 {% block title %}List{% endblock %}
 
 {% block container %}
-    <div class="box">
-        <h1 class="title">Liste des souhaits</h1>
+    <div class="container">
+        <div class="box">
+            <h1 class="title">Liste de souhait</h1>
 
-        {% if currentPage > 1 %}
-        <a href="{{ path('wish_list', {currentPage + 1 }) }}">Next page</a>
-        {% endif %}
-        <a href="{{ path('wish_list', {currentPage - 1 }) }}">Previous page</a>
-        {% for wish in wishes %}
-            <article>
-                <div class="block">
-                    <p>{{ wish.title }} <a href="{{ path('wish_detail', {id: wish.id}) }}">Détails</a></p>
-                </div>
-            </article>
-        {% endfor %}
+            <a href="{{ path('wish_new', {'page': currentPage-1}) }}">(Ajouter un souhait)</a>
+
+            {% for wish in wishes %}
+                <article>
+                    <div class="block">
+                        <ul>
+                            <li>{{ wish.categorie.name }}</li></l>
+                            <li class="is-active"><p>{{ wish.title }} <small><a href="{{ path('wish_detail', {id: wish.id}) }}">Détails</a></small></p></li>
+                        </ul>
+                    </div>
+                </article>
+            {% endfor %}
+
+            {% if currentPage > 1 %}
+                <a href="{{ path('wish_list', {'page': currentPage-1}) }}">Page précèdente</a>
+            {% endif %}
+
+            <a href="{{ path('wish_list', {'page': currentPage+1}) }}">Page #{{ currentPage }} | Page suivante</a>
+        </div>
     </div>
 {% endblock %}

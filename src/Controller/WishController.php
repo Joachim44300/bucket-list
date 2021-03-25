@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Wish;
 use App\Form\WishType;
 use App\Repository\WishRepository;
@@ -39,7 +40,7 @@ class WishController extends AbstractController
             $entityManager->persist($wish);
             $entityManager->flush();
 
-            $this->addFlash("sucess", "Le souhait a été enregistré");
+            $this->addFlash("success", "Le souhait a été enregistré");
 
             // Redirige vers une autre page, ou vers la page actuelle pour vider le form
             return $this->redirectToRoute("wish_detail", [

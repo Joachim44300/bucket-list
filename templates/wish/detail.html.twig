@@ -3,17 +3,20 @@
 {% block title %}Detail{% endblock %}
 
 {% block container %}
-    <div class="box">
-        <article>
-            <div class="block">
-                <div class="notification is-link is-light">
-                    <h1>{{ wish.title }}</h1>
+    <div class="container">
+        <div class="box">
+            <article>
+                <div class="block">
+
+                    <h1 class="title">Détail</h1>
+                    <h2>Catégorie: {{ wish.categorie.name }}</h2>
+                    <h2>{{ wish.title }}</h2>
                     <p>
                         <strong>{{ wish.author }}</strong>
-                        <br>
-                        <small>le {{ wish.dateCreated|date("d/m/Y") }}</small>
-                        <br>
+                        le: <small>le {{ wish.dateCreated|date("d/m/Y") }}</small>
+                    <div class="notification is-link is-light">
                         {{ wish.description }}
+                    </div>
                     </p>
                 </div>
                 <nav class="level is-mobile">
@@ -35,7 +38,8 @@
                         </a>
                     </div>
                 </nav>
-            </div>
+        </div>
         </article>
+    </div>
     </div>
 {% endblock %}
