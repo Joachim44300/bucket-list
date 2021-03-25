@@ -33,11 +33,16 @@ class WishRepository extends ServiceEntityRepository
         $queryBuilder->setMaxResults(20);
 
         // Le tri
-        $queryBuilder->addOrderBy('w.dateCreated', 'DESC');
+        $queryBuilder->addOrderBy('w.dateCreated', 'DESC')
+            ->addSelect('c');
 
         // Ajoute des clauses WHERE
         $queryBuilder
             ->andWhere('w.isPublished = true');
+
+        // Ajoute une jointure à notre requête pour éviter les multiples requêtes réalisées par Doctrine
+        $queryBuilder->leftJoin('w.categorie', 'c');
+
 
         // On récupère l'objet Query de Doctrine
         $query = $queryBuilder->getQuery();

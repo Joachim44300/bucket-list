@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\WishRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -51,6 +53,16 @@ class Wish
      * @ORM\JoinColumn(nullable=false)
      */
     private $categorie;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Reaction::class, mappedBy="wish")
+     */
+    private $reaction;
+
+    public function __construct()
+    {
+        $this->reaction = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -128,4 +140,35 @@ class Wish
 
         return $this;
     }
+
+    /**
+     * @return Collection|Reaction[]
+     */
+    public function getReaction(): Collection
+    {
+        return $this->reaction;
+    }
+
+    public function addReaction(Reaction $reaction): self
+    {
+        if (!$this->reaction->contains($reaction)) {
+            $this->reaction[] = $reaction;
+            $reaction->setWish($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReaction(Reaction $reaction): self
+    {
+        if ($this->reaction->removeElement($reaction)) {
+            // set the owning side to null (unless already changed)
+            if ($reaction->getWish() === $this) {
+                $reaction->setWish(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

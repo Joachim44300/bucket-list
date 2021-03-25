@@ -7,7 +7,6 @@
         <div class="box">
             <article>
                 <div class="block">
-
                     <h1 class="title">Détail</h1>
                     <h2>Catégorie: {{ wish.categorie.name }}</h2>
                     <h2>{{ wish.title }}</h2>
@@ -16,6 +15,13 @@
                         le: <small>le {{ wish.dateCreated|date("d/m/Y") }}</small>
                     <div class="notification is-link is-light">
                         {{ wish.description }}
+                    </div>
+                    <div>
+                        {% for reaction in reactions %}
+                            {% if reaction.wish.id == wish.id %}
+                                {{ reaction.message }}
+                            {% endif %}
+                        {% endfor %}
                     </div>
                     </p>
                 </div>
@@ -38,8 +44,22 @@
                         </a>
                     </div>
                 </nav>
-        </div>
         </article>
-    </div>
+            <div class="container">
+                <div class="box">
+                    <div class="block">
+                        <h1>Ajouter un commentaire</h1>
+
+                        <div class="field">
+                            {# form_theme form 'foundation_5_layout.html.twig' #}
+
+                            {{ form_start(reactionForm) }}
+                            {{ form_widget(reactionForm) }}
+                            <button>Envoyer !</button>
+                            {{ form_end(reactionForm) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 {% endblock %}

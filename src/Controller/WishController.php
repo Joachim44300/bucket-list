@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Reaction;
 use App\Entity\Wish;
+use App\Form\ReactionType;
 use App\Form\WishType;
+use App\Repository\ReactionRepository;
 use App\Repository\WishRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,7 +52,6 @@ class WishController extends AbstractController
 
         }
 
-
         return $this->render("/wishes/new_wish.html.twig", [
             // Passe l'instance à twig pour affichage
             "wishForm" => $wishForm->createView()
@@ -73,11 +75,38 @@ class WishController extends AbstractController
     /**
      * @Route("/wishes/detail/{id}", name="wish_detail")
      */
-    public function detail($id, WishRepository $wishRepository): Response
+    public function detail($id, WishRepository $wishRepository, ReactionRepository $reactionRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $wish = $wishRepository->find($id);
+        $allReaction = $reactionRepository->findAll();
+
+        // Crée une instance de l'entité que le form sert à créer
+        $reaction = new Reaction();
+
+        // Crée une instance de la classe de formulaire
+        // On associe cette entité à notre formulaire
+        $reactionForm = $this->createForm(ReactionType::class, $reaction);
+
+        // On prend les données du formulaire soumis, et les injecte dans mon $wish
+        $reactionForm->handleRequest($request);
+
+        // Si le formulaire est soumis
+        if ($reactionForm->isSubmitted() && $reactionForm->isValid()) {
+            // Hydrate les propriétés qui sont encore null
+            $reaction->setDateCreated(new \DateTime());
+            $reaction->setWish($wish);
+
+            // Sauvegarde en Bdd
+            $entityManager->persist($reaction);
+            $entityManager->flush();
+
+            $this->addFlash("success", "Le message a été enregistré");
+        }
+
         return $this->render('wish/detail.html.twig', [
-            "wish" => $wish
+            "wish" => $wish,
+            "reactions" => $allReaction,
+            "reactionForm" => $reactionForm->createView()
         ]);
     }
 
