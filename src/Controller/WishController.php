@@ -101,6 +101,11 @@ class WishController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash("success", "Le message a été enregistré");
+
+            // Redirige vers une autre page, ou vers la page actuelle pour vider le form
+            return $this->redirectToRoute("wish_detail", [
+                'id' => $wish->getId()
+            ]);
         }
 
         return $this->render('wish/detail.html.twig', [

@@ -4,62 +4,62 @@
 
 {% block container %}
     <div class="container">
-        <div class="box">
-            <article>
-                <div class="block">
-                    <h1 class="title">Détail</h1>
-                    <h2>Catégorie: {{ wish.categorie.name }}</h2>
-                    <h2>{{ wish.title }}</h2>
-                    <p>
-                        <strong>{{ wish.author }}</strong>
-                        le: <small>le {{ wish.dateCreated|date("d/m/Y") }}</small>
-                    <div class="notification is-link is-light">
-                        {{ wish.description }}
-                    </div>
-                    <div>
-                        {% for reaction in reactions %}
-                            {% if reaction.wish.id == wish.id %}
-                                {{ reaction.message }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    </p>
+    <div class="box">
+        <article>
+            <div class="block">
+                <h1 class="title">Détail</h1>
+                <h2>Catégorie: {{ wish.categorie.name }}</h2>
+                <h2>{{ wish.title }}</h2>
+                <p>
+                    <strong>{{ wish.author }}</strong>
+                    le: <small>le {{ wish.dateCreated|date("d/m/Y") }}</small>
+                <div class="notification is-link is-light">
+                    {{ wish.description }}
                 </div>
-                <nav class="level is-mobile">
-                    <div class="level-left">
-                        <a class="level-item" aria-label="reply">
-            <span class="icon is-small">
-              <i class="fas fa-reply" aria-hidden="true"></i>
-            </span>
-                        </a>
-                        <a class="level-item" aria-label="retweet">
-            <span class="icon is-small">
-              <i class="fas fa-retweet" aria-hidden="true"></i>
-            </span>
-                        </a>
-                        <a class="level-item" aria-label="like">
-            <span class="icon is-small">
-              <i class="fas fa-heart" aria-hidden="true"></i>
-            </span>
-                        </a>
-                    </div>
-                </nav>
+                <div>
+                    {% for reaction in reactions %}
+                        {% if reaction.wish.id == wish.id %}
+                            {{ reaction.message }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                </p>
+            </div>
+            <nav class="level is-mobile">
+                <div class="level-left">
+                    <a class="level-item" aria-label="reply">
+                        <span class="icon is-small">
+                          <i class="fas fa-reply" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                    <a class="level-item" aria-label="retweet">
+                        <span class="icon is-small">
+                          <i class="fas fa-retweet" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                    <a class="level-item" aria-label="like">
+                        <span class="icon is-small">
+                          <i class="fas fa-heart" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </div>
+            </nav>
         </article>
-            <div class="container">
-                <div class="box">
-                    <div class="block">
-                        <h1>Ajouter un commentaire</h1>
+        <div class="container">
+            <div class="box">
+                <div class="block">
+                    <h1>Ajouter un commentaire</h1>
 
-                        <div class="field">
-                            {# form_theme form 'foundation_5_layout.html.twig' #}
+                    <div class="field">
+                        {# form_theme form 'foundation_5_layout.html.twig' #}
 
-                            {{ form_start(reactionForm) }}
-                            {{ form_widget(reactionForm) }}
-                            <button>Envoyer !</button>
-                            {{ form_end(reactionForm) }}
-                        </div>
+                        {{ form_start(reactionForm) }}
+                        {{ form_widget(reactionForm) }}
+                        <button>Envoyer !</button>
+                        {{ form_end(reactionForm) }}
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 {% endblock %}
