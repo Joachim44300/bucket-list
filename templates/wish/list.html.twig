@@ -2,7 +2,7 @@
 
 {% block title %}List{% endblock %}
 
-{% block container %}
+{% block body %}
     <div class="container">
         <div class="box">
             <h1 class="title">Liste de souhait</h1>
@@ -13,7 +13,7 @@
                 <article>
                     <div class="block">
                         <ul>
-                            <li>{{ wish.categorie.name }}</li></l>
+                            <li>{{ wish.category.name }}</li></l>
                             <li class="is-active"><p>{{ wish.title }} <small><a href="{{ path('wish_detail', {id: wish.id}) }}">Détails</a></small></p></li>
                         </ul>
                     </div>

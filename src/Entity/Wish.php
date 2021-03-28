@@ -39,7 +39,7 @@ class Wish
     private $author;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": true})
      */
     private $isPublished;
 
@@ -49,10 +49,15 @@ class Wish
     private $dateCreated;
 
     /**
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private $likes = 0;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="wishes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $categorie;
+    private $category;
 
     /**
      * @ORM\OneToMany(targetEntity=Reaction::class, mappedBy="wish")
@@ -129,14 +134,26 @@ class Wish
         return $this;
     }
 
-    public function getCategorie(): ?Category
+    public function getLikes(): ?int
     {
-        return $this->categorie;
+        return $this->likes;
     }
 
-    public function setCategorie(?Category $categorie): self
+    public function setLikes(int $likes): self
     {
-        $this->categorie = $categorie;
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

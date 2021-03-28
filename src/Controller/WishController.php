@@ -26,6 +26,10 @@ class WishController extends AbstractController
         // Crée une instance de l'entité que le form sert à créer
         $wish = new Wish();
 
+        // Remplissage du pseudo dans le formulaire
+        $currentUsername = $this->getUser()->getUsername();
+        $wish->setAuthor($currentUsername);
+
         // Crée une instance de la classe de formulaire
         // On associe cette entité à notre formulaire
         $wishForm = $this->createForm(WishType::class, $wish);
@@ -64,10 +68,13 @@ class WishController extends AbstractController
     public function list(WishRepository $wishRepository, int $page = 1): Response
     {
         //$wishes = $wishRepository->findBy([], ['dateCreated' => "DESC"], 30, 0);
-        $wishes = $wishRepository->findWishList($page);
+        //todo: requête à la bdd pour aller chercher tous les wishes
+        $result = $wishRepository->findWishList($page);
+        $wishes = $result['result'];
 
         return $this->render('wish/list.html.twig', [
             "wishes" => $wishes,
+            "totalResultCount" => $result['totalResultCount'],
             "currentPage" => $page,
         ]);
     }
@@ -78,7 +85,7 @@ class WishController extends AbstractController
     public function detail($id, WishRepository $wishRepository, ReactionRepository $reactionRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $wish = $wishRepository->find($id);
-        $allReaction = $reactionRepository->findAll();
+        $allReaction = $reactionRepository->findBy(['wish' => $wish]);
 
         // Crée une instance de l'entité que le form sert à créer
         $reaction = new Reaction();

@@ -25,7 +25,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Wish::class, mappedBy="categorie")
+     * @ORM\OneToMany(targetEntity=Wish::class, mappedBy="category")
      */
     private $wishes;
 
@@ -63,7 +63,7 @@ class Category
     {
         if (!$this->wishes->contains($wish)) {
             $this->wishes[] = $wish;
-            $wish->setCategorie($this);
+            $wish->setCategory($this);
         }
 
         return $this;
@@ -73,8 +73,8 @@ class Category
     {
         if ($this->wishes->removeElement($wish)) {
             // set the owning side to null (unless already changed)
-            if ($wish->getCategorie() === $this) {
-                $wish->setCategorie(null);
+            if ($wish->getCategory() === $this) {
+                $wish->setCategory(null);
             }
         }
 

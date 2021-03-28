@@ -18,7 +18,7 @@
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="https://bulma.io">
-                <img src="{{ asset('img/logo.png') }}">
+                <img src="{{ asset('img/logo.png') }}" alt="logo">
             </a>
 
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -49,12 +49,23 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-primary">
-                            <strong>Sign up</strong>
-                        </a>
-                        <a class="button is-light">
-                            Log in
-                        </a>
+                        {% if app.user == "" %}
+                            <a class="button is-primary" href="{{ path('app_register') }}">
+                                <strong>Sign up</strong>
+                            </a>
+
+                            <a class="button is-light" href="{{ path('app_login') }}">
+                                Log in
+                            </a>
+                        {% else %}
+                            <a class="button is-primary" href="{{ path('wish_new') }}">
+                                <strong>Add your idea</strong>
+                            </a>
+
+                            <a class="button is-light" href="{{ path('app_logout') }}">
+                                Log out
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -63,22 +74,25 @@
 </header>
 
 <div class="container">
-        <article>
-            <div class="block">
-                {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="notification is-{{ label }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
+    <article>
+        <div class="block">
+            {% if app.user != "" %}
+                <p>Vous êtes connecté en tant que: {{ app.user.username }}</p>
+            {% endif %}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="notification is-{{ label }}">
+                        {{ message }}
+                    </div>
                 {% endfor %}
-            </div>
-        </article>
+            {% endfor %}
+        </div>
+    </article>
 </div>
 
 <main>
     <section class="section">
-        {% block container %}
+        {% block body %}
             <h1 class="title">Section</h1>
             <h2 class="subtitle">
                 A simple container to divide your page into <strong>sections</strong>, like the one you're currently reading.

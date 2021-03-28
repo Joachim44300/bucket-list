@@ -90,4 +90,5 @@ class Reaction
 
         return $this;
     }
+
 }

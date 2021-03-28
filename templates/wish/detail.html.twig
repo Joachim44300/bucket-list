@@ -2,13 +2,13 @@
 
 {% block title %}Detail{% endblock %}
 
-{% block container %}
+{% block body %}
     <div class="container">
     <div class="box">
         <article>
             <div class="block">
                 <h1 class="title">Détail</h1>
-                <h2>Catégorie: {{ wish.categorie.name }}</h2>
+                <h2>Catégorie: {{ wish.category.name }}</h2>
                 <h2>{{ wish.title }}</h2>
                 <p>
                     <strong>{{ wish.author }}</strong>
@@ -18,9 +18,7 @@
                 </div>
                 <div>
                     {% for reaction in reactions %}
-                        {% if reaction.wish.id == wish.id %}
-                            {{ reaction.message }}
-                        {% endif %}
+                        {{ reaction.message }}
                     {% endfor %}
                 </div>
                 </p>
