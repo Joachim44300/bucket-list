@@ -2,14 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
 use App\Entity\Reaction;
 use App\Entity\Wish;
 use App\Form\ReactionType;
 use App\Form\WishType;
 use App\Repository\ReactionRepository;
 use App\Repository\WishRepository;
-use Doctrine\ORM\EntityManager;
+use App\Util\Censurator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,14 +20,14 @@ class WishController extends AbstractController
     /**
      * @Route("/contribuer/", name="wish_new")
      */
-    public function newWish(Request $request, EntityManagerInterface $entityManager): Response
+    public function newWish(Request $request, EntityManagerInterface $entityManager, Censurator $censurator): Response
     {
         // Crée une instance de l'entité que le form sert à créer
         $wish = new Wish();
 
         // Remplissage du pseudo dans le formulaire
-        $currentUsername = $this->getUser()->getUsername();
-        $wish->setAuthor($currentUsername);
+         $currentUsername = $this->getUser()->getUsername();
+         $wish->setAuthor($currentUsername);
 
         // Crée une instance de la classe de formulaire
         // On associe cette entité à notre formulaire
@@ -39,9 +38,14 @@ class WishController extends AbstractController
 
         // Si le formulaire est soumis
         if ($wishForm->isSubmitted() && $wishForm->isValid()) {
+
             // Hydrate les propriétés qui sont encore null
             $wish->setIsPublished(true);
             $wish->setDateCreated(new \DateTime());
+
+            // On appelle le service Censurator
+            $censuratorDescription = $censurator->purify($wish->getDescription());
+            $wish->setDescription($censuratorDescription);
 
             // Sauvegarde en Bdd
             $entityManager->persist($wish);
